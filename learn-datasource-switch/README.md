@@ -1,4 +1,2 @@
-# datasource_switch_test
-SpringBoot动态切换数据源
-
-https://blog.zjq.im/post/spring-boot-multiple-druid-datasource/
+ # 动态切换数据源
+     数据源暂未动态添加

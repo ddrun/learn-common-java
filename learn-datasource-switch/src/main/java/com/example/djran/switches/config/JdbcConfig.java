@@ -45,9 +45,9 @@ public class JdbcConfig {
      * 数据源3
      * @return
      */
-    @Bean("dengjrDataSource")
-    @ConfigurationProperties(prefix = "dengjr.datasource")
-    public DataSource dengjrDataSource(){
+    @Bean("djranDataSource")
+    @ConfigurationProperties(prefix = "djran.datasource")
+    public DataSource djranDataSource(){
         return DruidDataSourceBuilder.create().build();
     }
 
@@ -55,19 +55,19 @@ public class JdbcConfig {
      * 用于动态切换数据源
      * @param mysqlDataSource
      * @param oracleDataSource
-     * @param dengjrDataSource
+     * @param djranDataSource
      * @return
      */
     @Primary
     @Bean(name = "dynamicDataSource")
     public DataSource dynamicDataSource(@Qualifier("mysqlDataSource") DataSource mysqlDataSource,
                                         @Qualifier("oracleDataSource") DataSource oracleDataSource,
-                                        @Qualifier("dengjrDataSource") DataSource dengjrDataSource) {
+                                        @Qualifier("djranDataSource") DataSource djranDataSource) {
         DynamicDataSourceResolver resolver = new DynamicDataSourceResolver();
         Map<Object, Object> dataSources = new HashMap<>();
         dataSources.put("MYSQL".toString(),mysqlDataSource);
         dataSources.put("ORACLE",oracleDataSource);
-        dataSources.put("DENGJR",dengjrDataSource);
+        dataSources.put("DJRAN",djranDataSource);
         resolver.setTargetDataSources(dataSources);
         //设置默认数据源，当无法映射到数据源时会使用默认数据源
         resolver.setDefaultTargetDataSource(oracleDataSource);
@@ -79,7 +79,7 @@ public class JdbcConfig {
      * 设置SqlSessionFactory ，使用动态切换数据源
      * @param mysqlDataSource
      * @param oracleDataSource
-     * @param dengjrDataSource
+     * @param djranDataSource
      * @return
      * @throws Exception
      */
@@ -87,10 +87,10 @@ public class JdbcConfig {
     @Primary
     public SqlSessionFactory sqlSessionFactory(@Qualifier("mysqlDataSource") DataSource mysqlDataSource,
                                                @Qualifier("oracleDataSource") DataSource oracleDataSource,
-                                               @Qualifier("dengjrDataSource") DataSource dengjrDataSource)
+                                               @Qualifier("djranDataSource") DataSource djranDataSource)
             throws Exception {
         SqlSessionFactoryBean fb = new SqlSessionFactoryBean();
-        fb.setDataSource(this.dynamicDataSource(mysqlDataSource, oracleDataSource,dengjrDataSource));
+        fb.setDataSource(this.dynamicDataSource(mysqlDataSource, oracleDataSource,djranDataSource));
         return fb.getObject();
     }
 

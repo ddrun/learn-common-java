@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * @author dengjr.
+ * @author
  */
 @Data
 public class Posts implements Serializable {

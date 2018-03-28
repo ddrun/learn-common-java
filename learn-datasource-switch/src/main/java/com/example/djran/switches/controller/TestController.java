@@ -41,15 +41,4 @@ public class TestController {
     public List<Posts> getPost(String type) {
         return userService.getPost(type);
     }
-
-    public void dynamicUpdateDataSoure(){
-        DataSource updateDataSource=this.updateDataSource();
-
-    }
-
-    @Bean
-    @ConfigurationProperties(prefix = "update.dataSource")
-    public DataSource updateDataSource(){
-        return DataSourceBuilder.create().build();
-    }
 }

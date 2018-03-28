@@ -34,8 +34,8 @@ public class UserServiceImpl implements UserService {
         if("mysql".equals(type)){
             DynamicDataSourceContextHolder.setDataSourceType("MYSQL");
         }
-        if("dengjr".equals(type)){
-            DynamicDataSourceContextHolder.setDataSourceType("DENGJR");
+        if("djran".equals(type)){
+            DynamicDataSourceContextHolder.setDataSourceType("DJRAN");
         }
         return usersMapper.getAllUser();
     }
@@ -60,8 +60,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<Posts> getPost(String type) {
-        if("dengjr".equals(type)){
-            DynamicDataSourceContextHolder.setDataSourceType("DENGJR");
+        if("djran".equals(type)){
+            DynamicDataSourceContextHolder.setDataSourceType("DJRAN");
         }
         return usersMapper.getAllPost();
     }

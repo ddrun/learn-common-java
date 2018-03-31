@@ -1,4 +1,4 @@
-package com.example.djran.utils;
+package com.example.djran.common.utils;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

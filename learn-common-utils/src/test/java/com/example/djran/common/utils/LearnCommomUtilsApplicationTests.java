@@ -1,4 +1,4 @@
-package com.example.djran.utils;
+package com.example.djran.common.utils;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

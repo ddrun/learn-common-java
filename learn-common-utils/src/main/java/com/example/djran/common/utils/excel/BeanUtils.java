@@ -1,4 +1,4 @@
-package com.example.djran.utils.excel;
+package com.example.djran.common.utils.excel;
 
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;

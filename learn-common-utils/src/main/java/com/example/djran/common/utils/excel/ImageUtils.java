@@ -1,4 +1,4 @@
-package com.example.djran.utils.excel;
+package com.example.djran.common.utils.excel;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;

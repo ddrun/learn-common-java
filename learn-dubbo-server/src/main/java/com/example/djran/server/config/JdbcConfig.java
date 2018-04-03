@@ -25,33 +25,13 @@ import java.sql.SQLException;
 @Configuration
 @EnableJpaRepositories(basePackageClasses = PostsDao.class)
 public class JdbcConfig {
+
     @Bean("dataSource")
     @ConfigurationProperties(prefix = "djran.datasource")
     public DataSource dataSource(){
         return DruidDataSourceBuilder.create().build();
     }
 
-//    @Value("${djran.datasource.url}")
-//    private String url;
-//    @Value("${djran.datasource.username}")
-//    private String username;
-//    @Value("${djran.datasource.password}")
-//    private String password;
-//
-//
-//    @Bean("dataSource")
-//    @Primary
-//    public DataSource dataSource()  {
-//        DruidDataSource basicDataSource = new DruidDataSource();
-//        basicDataSource.setUrl(url);
-//        basicDataSource.setUsername(username);
-//        basicDataSource.setPassword(password);
-//        basicDataSource.setInitialSize(10);
-//        basicDataSource.setMaxActive(50);
-////        basicDataSource.setFilters("stat,wall");
-//        log.info("使用本地数据源：" + basicDataSource.getUrl());
-//        return basicDataSource;
-//    }
     @Bean(name = "entityManager")
     @Primary
     public EntityManager entityManager(EntityManagerFactoryBuilder builder) throws SQLException {

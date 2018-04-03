@@ -19,6 +19,6 @@
     <!-- 暴露服务 -->
     <dubbo:protocol name="${dubbo.protocol.name}" port="${dubbo.protocol.port}" />
 
-    <dubbo:service interface="com.example.djran.server.service.PostsServiceImpl"
-                   ref="exampleServiceImpl" retries="0" timeout="6000" />
+    <dubbo:service interface="com.example.djran.api.service.PostsService"
+                   ref="postsServiceImpl" retries="0" timeout="6000" />
 </beans>

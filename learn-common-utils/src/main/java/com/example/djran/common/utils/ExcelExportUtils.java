@@ -1,4 +1,4 @@
-package com.example.djran.common.utils.excel;
+package com.example.djran.common.utils;
 
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.hssf.util.HSSFColor;
@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * Created on 2018/3/28
  * excel导出工具类
- * @author dengjr
+ * @author d.djran@gmail.com
  */
 public class ExcelExportUtils {
     /**

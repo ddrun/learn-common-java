@@ -1,4 +1,4 @@
-package com.example.djran.common.utils.excel;
+package com.example.djran.common.utils;
 
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
@@ -9,7 +9,11 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
-
+/**
+ * Created on 2018/3/2
+ * Bean处理工具类
+ * @author d.djran@gmail.com
+ */
 public class BeanUtils {
     /**
      * bean 转化为实体

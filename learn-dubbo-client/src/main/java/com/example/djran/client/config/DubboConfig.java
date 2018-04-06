@@ -1,16 +1,16 @@
-package com.example.djran.server.config;
+package com.example.djran.client.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.context.annotation.PropertySource;
 
 /**
- * Created on 2018/3/30
+ * Created on 2018/4/3
  *
- * @author d.djran@gmail.com
+ * @author dengjr
  */
 @Configuration
-@PropertySource("classpath:dubbo/dubbo.provider.properties")
-@ImportResource({"classpath:dubbo/*.xml"})
+@ImportResource({"dubbo/*.xml"})
+@PropertySource("classpath:dubbo/dubbo-client.properties")
 public class DubboConfig {
 }

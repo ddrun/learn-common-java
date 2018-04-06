@@ -13,7 +13,7 @@ import java.util.List;
  * Posts接口实现
  * @author d.djran@gmail.com
  */
-@Service()
+@Service
 public class PostsServiceImpl implements PostsService{
 
     @Autowired

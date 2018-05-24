@@ -1,5 +1,7 @@
 package com.example.djran.multithread.practice;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -18,42 +20,60 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @author d.djran@gmail.com
+ * Copyright (c) 2018, Wray Zheng. All Rights Reserved.
  * @function 大文件多线程分段下载
  * @time 2018/4/27
  */
-public class MulitiThreadDownload {
-
+@Slf4j
+public class MultiThreadDownload {
+    /**
+     * 判断文件是否支持端点续传
+     */
     private boolean resumable;
     private URL url;
     private File localFile;
+    /**
+     * 存放分段各端点位置
+     */
     private int[] endPoint;
     private Object waiting = new Object();
+    /**
+     * 线程安全整形类
+     */
     private AtomicInteger downloadedBytes = new AtomicInteger(0);
     private AtomicInteger aliveThreads = new AtomicInteger(0);
+
     private boolean multithreaded = true;
     private int fileSize = 0;
+    /**
+     * 线程数
+     */
     private int THREAD_NUM = 5;
     private int TIME_OUT = 5000;
     private final int MIN_SIZE = 2 << 20;
 
     public static void main(String[] args) throws IOException {
         String url = "http://mirrors.163.com/debian/ls-lR.gz";
-        new MulitiThreadDownload(url, "D:/ls-lR.gz", 5, 5000).get();
+        new MultiThreadDownload(url, "D:/ls-lR.gz", 5, 5000)
+                .get();
     }
 
-    public MulitiThreadDownload(String Url, String localPath) throws MalformedURLException {
+    public MultiThreadDownload(String Url, String localPath) throws MalformedURLException {
         this.url = new URL(Url);
         this.localFile = new File(localPath);
     }
 
-    public MulitiThreadDownload(String Url, String localPath,
+    public MultiThreadDownload(String Url, String localPath,
                           int threadNum, int timeout) throws MalformedURLException {
         this(Url, localPath);
         this.THREAD_NUM = threadNum;
         this.TIME_OUT = timeout;
     }
 
-    //开始下载文件
+    /**
+     * 开始下载文件
+     * @throws IOException
+     */
     public void get() throws IOException {
         long startTime = System.currentTimeMillis();
 
@@ -95,7 +115,11 @@ public class MulitiThreadDownload {
                 timeElapsed / 1000.0, downloadedBytes.get() / timeElapsed));
     }
 
-    //检测目标文件是否支持断点续传，以决定是否开启多线程下载文件的不同部分
+    /**
+     * 检测目标文件是否支持断点续传，以决定是否开启多线程下载文件的不同部分
+     * @return
+     * @throws IOException
+     */
     public boolean supportResumeDownload() throws IOException {
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestProperty("Range", "bytes=0-");
@@ -108,19 +132,21 @@ public class MulitiThreadDownload {
                 con.disconnect();
                 break;
             } catch (ConnectException e) {
-                System.out.println("Retry to connect due to connection problem.");
+                log.info("Retry to connect due to connection problem.");
             }
         }
         if (resCode == 206) {
-            System.out.println("* Support resume download");
+            log.info("* Support resume download");
             return true;
         } else {
-            System.out.println("* Doesn't support resume download");
+            log.info("* Doesn't support resume download");
             return false;
         }
     }
 
-    //监测下载速度及下载状态，下载完成时通知主线程
+    /**
+     * 监测下载速度及下载状态，下载完成时通知主线程
+     */
     public void startDownloadMonitor() {
         Thread downloadMonitor = new Thread(() -> {
             int prev = 0;
@@ -147,7 +173,10 @@ public class MulitiThreadDownload {
         downloadMonitor.start();
     }
 
-    //对临时文件进行合并或重命名
+    /**
+     * 对临时文件进行合并或重命名
+     * @throws IOException
+     */
     public void cleanTempFile() throws IOException {
         if (multithreaded) {
             merge();
@@ -158,7 +187,9 @@ public class MulitiThreadDownload {
         }
     }
 
-    //合并多线程下载产生的多个临时文件
+    /**
+     * 合并多线程下载产生的多个临时文件
+     */
     public void merge() {
         try (OutputStream out = new FileOutputStream(localFile)) {
             byte[] buffer = new byte[1024];
@@ -177,7 +208,9 @@ public class MulitiThreadDownload {
         }
     }
 
-    //一个下载线程负责下载文件的某一部分，如果失败则自动重试，直到下载完成
+    /**
+     * 一个下载线程负责下载文件的某一部分，如果失败则自动重试，直到下载完成
+     */
     class DownloadThread extends Thread {
         private int id;
         private int start;
@@ -191,7 +224,9 @@ public class MulitiThreadDownload {
             aliveThreads.incrementAndGet();
         }
 
-        //保证文件的该部分数据下载完成
+        /**
+         * 保证文件的该部分数据下载完成
+         */
         @Override
         public void run() {
             boolean success = false;
@@ -207,7 +242,10 @@ public class MulitiThreadDownload {
             aliveThreads.decrementAndGet();
         }
 
-        //下载文件指定范围的部分
+        /**
+         * 下载文件指定范围的部分
+         * @return
+         */
         public boolean download() {
             try {
                 HttpURLConnection con = (HttpURLConnection) url.openConnection();
